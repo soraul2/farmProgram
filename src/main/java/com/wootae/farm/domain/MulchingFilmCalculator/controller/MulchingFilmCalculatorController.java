@@ -2,6 +2,11 @@ package com.wootae.farm.domain.MulchingFilmCalculator.controller;
 
 import com.wootae.farm.domain.MulchingFilmCalculator.dto.MulchingFilmDTO;
 import com.wootae.farm.domain.MulchingFilmCalculator.service.MulchingFilmCalculatorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpSession; // [추가] 세션 사용
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +38,14 @@ public class MulchingFilmCalculatorController {
     }
 
     @PostMapping("/mulchingFilmCalculator")
+    @Operation(summary = "비닐 수량 계산하기", description = "평수 , 폭 , 길이 , 가격을 입력받아 롤 개수와 비용을 계산합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "계산 성공",
+                    content = @Content(schema = @Schema(implementation = MulchingFilmDTO.Response.class))
+            )
+    })
     public String mulchingFilmCalculator(@Valid @ModelAttribute("request") MulchingFilmDTO.Request request,
                                          BindingResult bindingResult,
                                          Model model,

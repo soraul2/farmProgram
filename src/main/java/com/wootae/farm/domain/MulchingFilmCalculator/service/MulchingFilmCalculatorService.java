@@ -9,6 +9,7 @@ public class MulchingFilmCalculatorService {
     public MulchingFilmDTO.Response mulchingFilmCalculator(MulchingFilmDTO.Request request){
 
         final double PYEONG_TO_M2 = 3.3;
+        final double M2_TO_PYEONG = 3.3;
         final double CM_TO_M = 100.0;
 
         //1. 입력 값 확인
@@ -26,6 +27,9 @@ public class MulchingFilmCalculatorService {
 
         //3. 비닐 한 롤이 덮는 면적 구하기 (폭[m] x 길이[m]
         double oneRollMulchingArea = parseWidth * height;
+        //평 수도 같이 return;
+        double oneRollMulchingAreaPyeong =  oneRollMulchingArea/M2_TO_PYEONG;
+        oneRollMulchingAreaPyeong = Math.round(oneRollMulchingAreaPyeong * 10.0) / 10.0;
 
         //4. 필요한 비닐 개수 구하기
         double neededCount = Math.round((totalArea / oneRollMulchingArea) * 100) / 100.0;
@@ -35,10 +39,12 @@ public class MulchingFilmCalculatorService {
 
         String kPrice = toKoreanCurrency((int) totalPrice);
 
+
         MulchingFilmDTO.Response response = MulchingFilmDTO.Response.builder()
                 .totalPrice(totalPrice)
                 .needsCount(neededCount)
                 .formattedPrice(kPrice)
+                .onePlasticRollCoverArea(oneRollMulchingAreaPyeong)
                 .build();
 
         return response;

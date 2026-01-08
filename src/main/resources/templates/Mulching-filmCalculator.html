@@ -251,14 +251,18 @@
                                 </span>
                             </li>
                             <li>
-                                <span class="calc-label">2. 비닐 1롤 커버</span>
+                                <span class="calc-label">2. 한 롤당 멀칭 가능한 면적</span>
                                 <span class="calc-value">
-                                    <span th:text="${#numbers.formatDecimal(request.width / 100.0, 0, 1)}">0.5</span>m(폭) ×
-                                    <span th:text="${request.height}">1000</span>m(길이) =
-                                    <strong><span
-                                            th:text="${#numbers.formatDecimal((request.width / 100.0) * request.height, 0, 1)}">500</span>m²</strong>
+                                    <span th:text="${#numbers.formatDecimal(request.width / 100.0, 0, 1)}">0.5</span>m ×
+                                    <span th:text="${request.height}">1000</span>m =
+                                    <strong><span th:text="${#numbers.formatDecimal((request.width / 100.0) * request.height, 0, 1)}">500</span>m²</strong>
+
+                                    <span style="color: #0071e3; margin-left: 4px;">
+                                        (약 <span th:text="${response.onePlasticRollCoverArea}">150.5</span>평)
+                                    </span>
                                 </span>
                             </li>
+
                             <li>
                                 <span class="calc-label">3. 최종 계산</span>
                                 <span class="calc-value">
