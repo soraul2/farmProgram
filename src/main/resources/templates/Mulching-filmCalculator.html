@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>비닐 계산기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* --- 애플 스타일 디자인 (심플 & 미니멀) --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            padding-top: 60px;
+            padding-bottom: 80px;
+        }
+
+        .calculator-card {
+            max-width: 500px;
+            margin: auto;
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            background: #ffffff;
+            border: none;
+        }
+
+        h3.card-title {
+            font-weight: 700;
+            font-size: 26px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1d1d1f;
+        }
+
+        /* 결과 표시 영역 */
+        .result-container {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ededed;
+        }
+
+        .result-main-text {
+            font-size: 52px;
+            font-weight: 700;
+            color: #0071e3;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .result-unit {
+            font-size: 20px;
+            font-weight: 500;
+            color: #0071e3;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        .result-sub-text {
+            font-size: 18px;
+            color: #86868b;
+            font-weight: 500;
+        }
+
+        .result-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #86868b;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        /* 계산 상세 내역 박스 스타일 */
+        .calculation-box {
+            background-color: #fbfbfd;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: left;
+            font-size: 13px;
+            color: #424245;
+            margin-top: 20px;
+        }
+
+        .calc-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #1d1d1f;
+        }
+
+        .calc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .calc-list li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 1px dashed #e5e5e5;
+        }
+
+        .calc-list li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .calc-label {
+            font-weight: 600;
+            color: #86868b;
+        }
+
+        .calc-value {
+            font-weight: 500;
+            color: #1d1d1f;
+            text-align: right;
+        }
+
+
+        /* 입력 폼 스타일 */
+        .form-label {
+            font-weight: 500;
+            font-size: 14px;
+            color: #424245;
+            margin-bottom: 6px;
+            margin-left: 2px;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            border: 1px solid #d1d1d6;
+            padding: 14px 16px;
+            font-size: 16px;
+            background-color: #ffffff;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #0071e3;
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+            outline: none;
+        }
+
+        .form-control.is-invalid {
+            border-color: #ff3b30;
+            background-image: none;
+        }
+
+        .form-control.is-invalid:focus {
+            box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.12);
+        }
+
+        .invalid-feedback {
+            color: #ff3b30;
+            font-size: 13px;
+            margin-top: 6px;
+            margin-left: 4px;
+        }
+
+        /* 버튼 스타일 */
+        .btn-apple {
+            background-color: #0071e3;
+            color: white;
+            font-weight: 600;
+            font-size: 17px;
+            width: 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-apple:hover {
+            background-color: #0077ED;
+        }
+
+        .btn-apple:active {
+            background-color: #006edb;
+            transform: scale(0.99);
+        }
+
+        /* 히스토리 테이블 스타일 */
+        .history-section {
+            margin-top: 40px;
+            border-top: 1px solid #ededed;
+            padding-top: 30px;
+        }
+
+        .table-custom th {
+            font-size: 13px;
+            font-weight: 600;
+            color: #86868b;
+            background-color: #f9f9fa;
+            border-bottom: 1px solid #ededed;
+            padding: 10px;
+        }
+
+        .table-custom td {
+            font-size: 14px;
+            color: #1d1d1f;
+            vertical-align: middle;
+            padding: 12px 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .table-custom tr:last-child td {
+            border-bottom: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="calculator-card">
+        <h3 class="card-title">비닐 계산기</h3>
+
+        <form th:action="@{/mulchingFilmCalculator}" th:object="${request}" method="post">
+
+            <div th:if="${response != null}">
+                <div class="result-container">
+                    <p class="result-label">필요 수량</p>
+                    <h1 class="result-main-text">
+                        <span th:text="${response.needsCount}">0</span><span class="result-unit">롤</span>
+                    </h1>
+                    <p class="result-sub-text">
+                        예상 금액:
+                        <span th:text="${#numbers.formatInteger(response.totalPrice, 0, 'COMMA')}">15,918,241,860</span>
+                        원
+
+                        <span style="font-size: 0.8em; color: #86868b; margin-left: 8px;">
+                            (<span th:text="${response.formattedPrice}">159억 1,824만 1,860원</span>)
+                        </span>
+                    </p>
+                    <div class="calculation-box">
+                        <p class="calc-title">💡 계산 상세 내역 (1평 = 3.3m²)</p>
+                        <ul class="calc-list">
+                            <li>
+                                <span class="calc-label">1. 밭 전체 면적</span>
+                                <span class="calc-value">
+                                    <span th:text="${request.area}">500</span>평 × 3.3 =
+                                    <strong><span
+                                            th:text="${#numbers.formatDecimal(request.area * 3.3, 0, 1)}">1650</span>m²</strong>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="calc-label">2. 비닐 1롤 커버</span>
+                                <span class="calc-value">
+                                    <span th:text="${#numbers.formatDecimal(request.width / 100.0, 0, 1)}">0.5</span>m(폭) ×
+                                    <span th:text="${request.height}">1000</span>m(길이) =
+                                    <strong><span
+                                            th:text="${#numbers.formatDecimal((request.width / 100.0) * request.height, 0, 1)}">500</span>m²</strong>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="calc-label">3. 최종 계산</span>
+                                <span class="calc-value">
+                                    전체 면적 ÷ 1롤 면적 =
+                                    <span style="color: #0071e3; font-weight: 700;"
+                                          th:text="${response.needsCount} + '개'">3.3개</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">밭의 면적 (평)</label>
+                <input type="number" th:field="*{area}"
+                       class="form-control"
+                       th:classappend="${#fields.hasErrors('area')} ? 'is-invalid'"
+                       placeholder="예: 100" inputmode="decimal">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('area')}" th:errors="*{area}">Error</div>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <label class="form-label">비닐 폭 (cm)</label>
+                    <input type="number" th:field="*{width}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('width')} ? 'is-invalid'"
+                           placeholder="예: 90" inputmode="numeric">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('width')}" th:errors="*{width}">Error</div>
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label">비닐 길이 (m)</label>
+                    <input type="number" th:field="*{height}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('height')} ? 'is-invalid'"
+                           placeholder="예: 500" inputmode="numeric">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('height')}" th:errors="*{height}">Error
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <label class="form-label">롤당 가격 (원)</label>
+                <input type="number" th:field="*{price}"
+                       class="form-control"
+                       th:classappend="${#fields.hasErrors('price')} ? 'is-invalid'"
+                       placeholder="예: 25000" inputmode="numeric">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Error</div>
+            </div>
+
+            <button type="submit" class="btn btn-apple">계산하기</button>
+        </form>
+
+        <div th:if="${history != null and !history.isEmpty()}" class="history-section">
+            <h5 class="fw-bold mb-3 text-center" style="font-size: 16px; color: #1d1d1f;">최근 계산 기록 🕒</h5>
+
+            <div class="card border-0"
+                 style="border-radius: 12px; overflow: hidden; background-color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                <table class="table table-custom mb-0 text-center">
+                    <thead>
+                    <tr>
+                        <th width="25%">면적</th>
+                        <th width="30%">비닐 규격</th>
+                        <th width="20%">수량</th>
+                        <th width="25%">금액</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="record : ${history}">
+                        <td>
+                            <span class="fw-bold" th:text="${record.request.area}">100</span>평
+                        </td>
+                        <td>
+                                <span class="text-muted" style="font-size: 12px;">
+                                    <span th:text="${record.request.width}">90</span>cm × <span
+                                        th:text="${record.request.height}">500</span>m
+                                </span>
+                        </td>
+                        <td>
+                            <span class="text-primary fw-bold" th:text="${record.response.needsCount}">3.3</span>
+                        </td>
+                        <td>
+                            <span class="fw-bold"
+                                  th:text="${#numbers.formatInteger(record.response.totalPrice, 0, 'COMMA')}">15,000</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center mt-3">
+                <small style="color: #aeaeae; font-size: 11px;">최근 5개 기록만 유지됩니다.</small>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
