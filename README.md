@@ -42,12 +42,30 @@
 
 ## 🔄 버전 및 업데이트 정보 (Changelog)
 
+### v.farm-0.0.6-SNAPSHOT (2026-01-09) (Current)
+* **🔍 SEO 및 AI 검색 최적화 (Search Engine Optimization)**
+  * **메타 태그 고도화:** 검색 엔진(Google, Naver) 및 LLM(ChatGPT, Gemini)이 페이지의 목적을 정확히 이해하도록 `<meta name="description">`, `og:title` 등 핵심 태그 적용.
+  * **JSON-LD 구조화 데이터 적용:** `SoftwareApplication` 스키마를 적용하여 기계가 웹 애플리케이션(계산기)으로 인식하도록 표준 데이터 제공.
+  * **Robots.txt 정책 개방:** `User-agent: *`, `Allow: /` 설정을 통해 모든 검색 봇 및 AI 크롤러의 접근 허용.
+  * **크롤러 접근성 개선:** Cloudflare WAF 설정을 최적화하여 Naver Yeti 등 주요 검색 봇의 접근 차단 문제 해결.
 
-### v.farm-0.0.4-SNAPSHOT (Current)
+* **🎨 UI/UX 및 콘텐츠 개선**
+  * **Semantic Header 구조 적용:** 디자인(Apple Style)을 해치지 않으면서 AI가 학습하기 좋은 형태의 설명 문구(`<header>`, `<h1>`) 추가.
+  * **가독성 강화:** "한국 농가 기준", "평 단위 입력" 등 타겟 유저에게 명확한 문맥(Context) 제공.
+
+* **🛠️ 인프라 안정화**
+  * Cloudflare Tunnel 연결 안정성 확보 및 500 Error 트러블슈팅 완료.
+
+### v.farm-0.0.5-SNAPSHOT 
+* **naver 노출 : ** Google Search Console에서는 성공적으로 테스트 됐고 naver search Advisor 에서는 robots.txt 부분이 허용이 되지 않는 다고 하여 정보를 찾아본 결과
+* 클라우드 플레어에서 자동으로 robots 를 막는 robots.txt 에 텍스트를 추가한 것을 확인 결론 :  Sitemap: https://farm.wootae.com/sitemap.xml 추가
+* 로고 이미지가 너무 AI가 만든 것으로 보이기에 새로운 이미지로 수정.
+
+### v.farm-0.0.4-SNAPSHOT
 * **naver,google 노출 :** google Search Console , naver search Advisor 활용하여 filmCalculator 헤더에 코드 추가 및 robots.txt로 검색 로봇 노출 허용
 * ** SSR 방식은 정적 html 파일이기 때문에 검색 엔진에 더욱 뜰 확률이 높아진다고 함. **
 
-### v.farm-0.0.3-SNAPSHOT (Current)
+### v.farm-0.0.3-SNAPSHOT
 * **API 명세 구현:** Swagger 적용
 * **테스트 코드 구현:** JUnit 5를 활용한 데이터 테스트 검증 완료
 
