@@ -42,6 +42,11 @@
 
 ## 🔄 버전 및 업데이트 정보 (Changelog)
 
+
+### v.farm-0.0.4-SNAPSHOT (Current)
+* **naver,google 노출 :** google Search Console , naver search Advisor 활용하여 filmCalculator 헤더에 코드 추가 및 robots.txt로 검색 로봇 노출 허용
+* ** SSR 방식은 정적 html 파일이기 때문에 검색 엔진에 더욱 뜰 확률이 높아진다고 함. **
+
 ### v.farm-0.0.3-SNAPSHOT (Current)
 * **API 명세 구현:** Swagger 적용
 * **테스트 코드 구현:** JUnit 5를 활용한 데이터 테스트 검증 완료
